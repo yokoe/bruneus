@@ -1,0 +1,3 @@
+pytest>=7.2.2
+pytest-cov
+python-dotenv

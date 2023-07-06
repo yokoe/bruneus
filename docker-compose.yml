@@ -1,0 +1,8 @@
+version: '3'
+services:
+  bruneus:
+    build: .
+    tty: true
+    volumes:
+      - .:/code
+      - ~/.config:/root/.config
