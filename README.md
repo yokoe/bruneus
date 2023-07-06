@@ -1,5 +1,5 @@
 # bruneus
-[![Maintainability](https://api.codeclimate.com/v1/badges/102f4aceaa6a1c544f52/maintainability)](https://codeclimate.com/github/yokoe/bruneus/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c9d020ea15b032c4cefb/maintainability)](https://codeclimate.com/github/yokoe/bruneus/maintainability)
 
 BigQuery helper library for Python
 
