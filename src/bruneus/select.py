@@ -76,6 +76,9 @@ class SelectTask:
     def to_dataframe(self):
         return self.job().to_dataframe()
 
+    def to_df(self):
+        return self.to_dataframe()
+
 
 def select(
     query: str,
