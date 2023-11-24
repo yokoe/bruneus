@@ -51,6 +51,14 @@ class TestSelect(unittest.TestCase):
         self.assertEqual(len(select_task.query_parameters), 1)
         self.assertEqual(len(select_task.to_dataframe().index), 3)
 
+    def test_select_float64_param(self):
+        query = "SELECT count(1) FROM `bigquery-public-data.samples.gsod` WHERE mean_temp > @mean_temp"
+        select_task = bruneus.select(query)
+        self.assertEqual(len(select_task.query_parameters), 0)
+        select_task.float64_param("mean_temp", 50.0)
+        self.assertEqual(len(select_task.query_parameters), 1)
+        self.assertEqual(len(select_task.to_dataframe().index), 1)
+
     def test_select_params(self):
         query = "SELECT word FROM `bigquery-public-data.samples.shakespeare` order by rand() limit @max_count"
         task1 = bruneus.select(query).int64_param("max_count", 1)

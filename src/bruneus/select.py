@@ -14,41 +14,41 @@ class SelectTask:
         self.query_parameters = params
         return self
 
-    def int64_param(self, key: str, value: int):
+    def add_scalar_param(self, key: str, value: int, data_type: str):
         if self.query_parameters is None:
             self.query_parameters = []
 
         self.query_parameters.append(
-            bigquery.ScalarQueryParameter(key, "INT64", value),
+            bigquery.ScalarQueryParameter(key, data_type, value),
         )
         return self
 
+    def int64_param(self, key: str, value: int):
+        return self.add_scalar_param(key, value, "INT64")
+
     def str_param(self, key: str, value: str):
+        return self.add_scalar_param(key, value, "STRING")
+
+    def float64_param(self, key: str, value: float):
+        return self.add_scalar_param(key, value, "FLOAT64")
+
+    def add_array_param(self, key: str, values: list, data_type: str):
         if self.query_parameters is None:
             self.query_parameters = []
 
         self.query_parameters.append(
-            bigquery.ScalarQueryParameter(key, "STRING", value),
+            bigquery.ArrayQueryParameter(key, data_type, values),
         )
         return self
 
     def int64_array_param(self, key: str, values: list[int]):
-        if self.query_parameters is None:
-            self.query_parameters = []
-
-        self.query_parameters.append(
-            bigquery.ArrayQueryParameter(key, "INT64", values),
-        )
-        return self
+        return self.add_array_param(key, values, "INT64")
 
     def str_array_param(self, key: str, values: list[str]):
-        if self.query_parameters is None:
-            self.query_parameters = []
+        return self.add_array_param(key, values, "STRING")
 
-        self.query_parameters.append(
-            bigquery.ArrayQueryParameter(key, "STRING", values),
-        )
-        return self
+    def float64_array_param(self, key: str, values: list[float]):
+        return self.add_array_param(key, values, "FLOAT64")
 
     def bq_client(self):
         return self.client if self.client is not None else bigquery.Client()
