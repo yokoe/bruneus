@@ -16,6 +16,11 @@ class TestSelect(unittest.TestCase):
         words = bruneus.select(query).as_dicts()
         self.assertEqual(len(words), 5)
 
+    def test_select_with_no_result(self):
+        query = "SELECT word FROM `bigquery-public-data.samples.shakespeare` where word = 'abcdef-012345' order by rand() limit 5"
+        word = bruneus.select(query).first_as_dict()
+        self.assertIsNone(word)
+
     def test_select_with_template(self):
         words = (
             bruneus.select_with_template("./tests/templates", "shakespeare.j2")

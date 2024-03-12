@@ -62,6 +62,9 @@ class SelectTask:
         return [dict(row) for row in query_job]
 
     def first_as_dict(self):
+        dicts = self.as_dicts()
+        if len(dicts) == 0:
+            return None
         return self.as_dicts()[0]
 
     def to_table(self, table_id, overwrite=False):
