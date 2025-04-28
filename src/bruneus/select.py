@@ -61,6 +61,20 @@ class SelectTask:
         query_job = self.job()
         return [dict(row) for row in query_job]
 
+    def stringify(
+        self, names={}, delimiter="\n", format="{{ name }}({{ key }}): {{ value }}"
+    ):
+        dicts = self.as_dicts()
+        strings = []
+        for d in dicts:
+            formatted_fields = []
+            for k, v in d.items():
+                name = names.get(k, k)
+                formatted_str = Template(format).render(key=k, name=name, value=v)
+                formatted_fields.append(formatted_str)
+            strings.append(delimiter.join(formatted_fields))
+        return strings
+
     def first_as_dict(self):
         dicts = self.as_dicts()
         if len(dicts) == 0:
