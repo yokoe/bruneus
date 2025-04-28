@@ -34,6 +34,48 @@ class TestSelect(unittest.TestCase):
         df = bruneus.select(query).to_dataframe()
         self.assertEqual(len(df.index), 5)
 
+    def test_select_to_stringified_array(self):
+        query = """
+        SELECT
+        word, word_count
+        FROM `bigquery-public-data.samples.shakespeare` 
+        WHERE 
+        LENGTH(word) >= 5 AND word_count >= 30
+        ORDER BY word LIMIT 5
+        """
+        strings = bruneus.select(query).stringify(
+            names={
+                "word": "Word",
+                "word_count": "Word Count",
+            },
+            delimiter="\n",
+            format="{{ name }}({{ key }}): {{ value }}",
+        )
+        self.assertEqual(len(strings), 5)
+
+        for s in strings:
+            self.assertIn("Word(", s)
+            self.assertIn("Word Count(", s)
+
+    def test_select_to_stringified_array_on_empty_data(self):
+        query = """
+        SELECT
+        word, word_count
+        FROM `bigquery-public-data.samples.shakespeare` 
+        WHERE 
+        LENGTH(word) >= 99999
+        ORDER BY word LIMIT 5
+        """
+        strings = bruneus.select(query).stringify(
+            names={
+                "word": "Word",
+                "word_count": "Word Count",
+            },
+            delimiter="\n",
+            format="{{ name }}({{ key }}): {{ value }}",
+        )
+        self.assertEqual(len(strings), 0)
+
     def test_select_int64_param(self):
         query = "SELECT word FROM `bigquery-public-data.samples.shakespeare` order by rand() limit @max_count"
         select_task = bruneus.select(query)
