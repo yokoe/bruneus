@@ -10,6 +10,8 @@ import bruneus
 bruneus.select("SELECT * FROM `foo.bar.purchases` LIMIT 20").as_dicts()
 bruneus.select("SELECT * FROM `foo.bar.purchases` ORDER BY created_at LIMIT 1", client=bigquery.Client(project="foobar")).first_as_dict()
 bruneus.select("SELECT * FROM `foo.bar.purchases` LIMIT 20").to_dataframe()
+
+bruneus.select("SELECT word, word_count FROM `bigquery-public-data.samples.shakespeare` LIMIT 5").stringify(names={"word": "Word", "word_count": "Word count"})
 ```
 
 ### Create table from query
