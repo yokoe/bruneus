@@ -53,8 +53,8 @@ class SelectTask:
     def bq_client(self):
         return self.client if self.client is not None else bigquery.Client()
 
-    def job(self):
-        job_config = bigquery.QueryJobConfig(query_parameters=self.query_parameters)
+    def job(self, dry_run=False, use_query_cache=True):
+        job_config = bigquery.QueryJobConfig(query_parameters=self.query_parameters, dry_run=dry_run, use_query_cache=use_query_cache)
         return self.bq_client().query(self.query, job_config=job_config)
 
     def as_dicts(self):
@@ -95,6 +95,9 @@ class SelectTask:
 
     def to_df(self):
         return self.to_dataframe()
+
+    def dry_run(self, use_query_cache=False):
+        return self.job(dry_run=True, use_query_cache=use_query_cache)
 
 
 def select(

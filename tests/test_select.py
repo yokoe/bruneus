@@ -114,6 +114,10 @@ class TestSelect(unittest.TestCase):
         task2 = bruneus.select(query).int64_param("max_count", 2)
         self.assertEqual(len(task2.query_parameters), 1)
 
+    def test_select_dry_run(self):
+        query = "SELECT word FROM `bigquery-public-data.samples.shakespeare`"
+        result = bruneus.select(query).dry_run()
+        self.assertTrue(result.total_bytes_processed > 0)
 
 if __name__ == "__main__":
     unittest.main()
